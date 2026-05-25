@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from routers import voice, synthesis
 
 load_dotenv()
 
@@ -17,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+app.include_router(voice.router)
+app.include_router(synthesis.router)
 
 TTS_SECRET_KEY =os.getenv("TTS_SECRET_KEY")
 
