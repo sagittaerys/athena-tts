@@ -1,10 +1,17 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import os
 from routers import voice, synthesis
+import os
 
 load_dotenv()
+
+
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    os.environ["HF_TOKEN"] = hf_token
+
+TTS_SECRET_KEY = os.getenv("TTS_SECRET_KEY")
 
 app = FastAPI(
     title="Athena TTS Server",
@@ -16,13 +23,12 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 app.include_router(voice.router)
 app.include_router(synthesis.router)
 
-TTS_SECRET_KEY =os.getenv("TTS_SECRET_KEY")
 
 def verify_secret(x_secret_key: str = None):
     if x_secret_key != TTS_SECRET_KEY:

@@ -5,3 +5,12 @@ __pycache__/
 *.egg-info/
 dist/
 .pytest_cache/
+kokoclone_src/
+model/
+voice/
+audio_output/
+voice_profiles/
+*.onnx
+*.bin
+*.pt
+*.safetensors
